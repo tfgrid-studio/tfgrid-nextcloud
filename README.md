@@ -88,8 +88,8 @@ tfgrid-compose up tfgrid-nextcloud \
 | `DNS_PROVIDER` | No | `manual` | DNS provider: `manual`, `name.com`, `namecheap`, `cloudflare` |
 | `NAMECOM_USERNAME` | If name.com | - | Name.com username |
 | `NAMECOM_API_TOKEN` | If name.com | - | Name.com API token |
-| `NAMECHEAP_API_USER` | If namecheap | - | Namecheap API username |
-| `NAMECHEAP_API_KEY` | If namecheap | - | Namecheap API key |
+| `NAMECHEAP_API_USER` | If namecheap | - | Namecheap API username (requires IP whitelisting) |
+| `NAMECHEAP_API_KEY` | If namecheap | - | Namecheap API key (requires IP whitelisting) |
 | `CLOUDFLARE_API_TOKEN` | If cloudflare | - | Cloudflare API token |
 
 #### Nextcloud Settings
