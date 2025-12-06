@@ -30,18 +30,95 @@ hooks:
   healthcheck: deployment/healthcheck.sh
 
 environment:
+  # Domain Configuration
   - name: DOMAIN
     required: true
     description: "Public domain for Nextcloud (e.g., cloud.example.com)"
+    
+  # DNS Automation
+  - name: DNS_PROVIDER
+    required: false
+    description: "DNS provider for automatic A record setup"
+    options:
+      - manual
+      - name.com
+      - namecheap
+      - cloudflare
+    default: "manual"
+  - name: NAMECOM_USERNAME
+    required: false
+    description: "Name.com username"
+    depends_on:
+      DNS_PROVIDER: "name.com"
+  - name: NAMECOM_API_TOKEN
+    required: false
+    secret: true
+    description: "Name.com API token"
+    depends_on:
+      DNS_PROVIDER: "name.com"
+  - name: NAMECHEAP_API_USER
+    required: false
+    description: "Namecheap API username"
+    depends_on:
+      DNS_PROVIDER: "namecheap"
+  - name: NAMECHEAP_API_KEY
+    required: false
+    secret: true
+    description: "Namecheap API key"
+    depends_on:
+      DNS_PROVIDER: "namecheap"
+  - name: CLOUDFLARE_API_TOKEN
+    required: false
+    secret: true
+    description: "Cloudflare API token"
+    depends_on:
+      DNS_PROVIDER: "cloudflare"
+      
+  # Nextcloud Settings
+  - name: NEXTCLOUD_ADMIN_USER
+    required: false
+    description: "Nextcloud admin username"
+    default: "admin"
+  - name: NEXTCLOUD_ADMIN_PASSWORD
+    required: false
+    secret: true
+    description: "Nextcloud admin password (auto-generated if not set)"
   - name: NEXTCLOUD_DATADIR
     required: false
-    description: "Data directory path (default: Docker volume)"
+    description: "Data directory path"
+    default: "/mnt/ncdata"
   - name: NEXTCLOUD_UPLOAD_LIMIT
     required: false
-    description: "Max upload size (default: 10G)"
+    description: "Maximum upload file size"
+    default: "10G"
   - name: NEXTCLOUD_MEMORY_LIMIT
     required: false
-    description: "PHP memory limit (default: 512M)"
+    description: "PHP memory limit"
+    default: "512M"
+    
+  # Optional Features
+  - name: COLLABORA_ENABLED
+    required: false
+    description: "Enable Collabora Online Office"
+    default: "false"
+  - name: TALK_ENABLED
+    required: false
+    description: "Enable Nextcloud Talk video calls"
+    default: "false"
+  - name: ONLYOFFICE_ENABLED
+    required: false
+    description: "Enable OnlyOffice (alternative to Collabora)"
+    default: "false"
+    
+  # Backup Configuration
+  - name: BACKUP_LOCATION
+    required: false
+    description: "Backup storage location"
+    default: "/mnt/backup"
+  - name: BACKUP_RETENTION
+    required: false
+    description: "Number of backups to keep"
+    default: "7"
 
 commands:
   backup:

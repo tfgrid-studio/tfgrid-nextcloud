@@ -9,52 +9,117 @@ Deploy a complete Nextcloud instance with:
 - **Built-in SSL** - Let's Encrypt certificates handled by AIO
 - **BorgBackup** - Automatic encrypted backups
 - **Auto-updates** - Managed through AIO interface
+- **Automatic DNS** - Optional DNS A record creation (Name.com, Namecheap, Cloudflare)
 
 ## Features
 
 - 📁 **File Sync & Share** - Access files from anywhere
 - 📅 **Calendar & Contacts** - Integrated productivity apps
 - 📧 **Email Integration** - Connect your email accounts
-- 🎥 **Talk** - Video calls and chat
-- 📝 **Office** - Collaborative document editing
+- 🎥 **Talk** - Video calls and chat (optional)
+- 📝 **Office** - Collaborative document editing (Collabora/OnlyOffice)
 - 🔒 **End-to-end Encryption** - Optional E2EE for sensitive files
 
 ## Quick Start
 
+### Basic Deployment (Interactive)
+
+The easiest way to deploy - answers questions interactively:
+
 ```bash
-# Deploy with tfgrid-compose
-tfgrid-compose up tfgrid-nextcloud
-
-# Or manually:
-cp .env.example .env
-nano .env  # Set your domain
-
-tfgrid-compose up .
+tfgrid-compose up tfgrid-nextcloud -i
 ```
 
-After deployment, complete setup via the AIO interface at `https://<server-ip>:8443`.
+This will prompt you for:
+1. Domain name
+2. DNS provider (optional automatic setup)
+3. Nextcloud settings
+4. Optional features (Talk, Collabora, OnlyOffice)
+5. Resource allocation
+6. Node selection
+
+### One-Line Deployment
+
+Deploy with all settings on the command line:
+
+```bash
+tfgrid-compose up tfgrid-nextcloud \
+  --env DOMAIN=cloud.example.com \
+  --env NEXTCLOUD_ADMIN_USER=admin \
+  --env NEXTCLOUD_UPLOAD_LIMIT=10G
+```
+
+### Full Deployment Example
+
+Complete deployment with DNS automation and all options:
+
+```bash
+# With Cloudflare DNS and optional features
+tfgrid-compose up tfgrid-nextcloud \
+  --env DOMAIN=cloud.example.com \
+  --env DNS_PROVIDER=cloudflare \
+  --env CLOUDFLARE_API_TOKEN=your-cf-token \
+  --env NEXTCLOUD_ADMIN_USER=myadmin \
+  --env NEXTCLOUD_UPLOAD_LIMIT=20G \
+  --env NEXTCLOUD_MEMORY_LIMIT=1G \
+  --env COLLABORA_ENABLED=true \
+  --env TALK_ENABLED=true \
+  --cpu 4 \
+  --memory 8192 \
+  --disk 500
+
+# With Name.com DNS
+tfgrid-compose up tfgrid-nextcloud \
+  --env DOMAIN=cloud.example.com \
+  --env DNS_PROVIDER=name.com \
+  --env NAMECOM_USERNAME=myuser \
+  --env NAMECOM_API_TOKEN=your-token
+```
 
 ## Configuration
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DOMAIN` | Yes | Public domain for Nextcloud |
-| `NEXTCLOUD_DATADIR` | No | Custom data directory |
-| `NEXTCLOUD_UPLOAD_LIMIT` | No | Max upload size (default: 10G) |
-| `NEXTCLOUD_MEMORY_LIMIT` | No | PHP memory limit (default: 512M) |
+#### Domain & DNS
 
-### Example .env
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `DOMAIN` | **Yes** | - | Public domain for Nextcloud |
+| `DNS_PROVIDER` | No | `manual` | DNS provider: `manual`, `name.com`, `namecheap`, `cloudflare` |
+| `NAMECOM_USERNAME` | If name.com | - | Name.com username |
+| `NAMECOM_API_TOKEN` | If name.com | - | Name.com API token |
+| `NAMECHEAP_API_USER` | If namecheap | - | Namecheap API username |
+| `NAMECHEAP_API_KEY` | If namecheap | - | Namecheap API key |
+| `CLOUDFLARE_API_TOKEN` | If cloudflare | - | Cloudflare API token |
 
-```bash
-DOMAIN=cloud.example.com
-NEXTCLOUD_UPLOAD_LIMIT=10G
-```
+#### Nextcloud Settings
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `NEXTCLOUD_ADMIN_USER` | No | `admin` | Admin username |
+| `NEXTCLOUD_ADMIN_PASSWORD` | No | auto-generated | Admin password |
+| `NEXTCLOUD_DATADIR` | No | `/mnt/ncdata` | Data directory path |
+| `NEXTCLOUD_UPLOAD_LIMIT` | No | `10G` | Maximum upload file size |
+| `NEXTCLOUD_MEMORY_LIMIT` | No | `512M` | PHP memory limit |
+
+#### Optional Features
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `COLLABORA_ENABLED` | No | `false` | Enable Collabora Online Office |
+| `TALK_ENABLED` | No | `false` | Enable Nextcloud Talk video calls |
+| `ONLYOFFICE_ENABLED` | No | `false` | Enable OnlyOffice (alternative to Collabora) |
+
+#### Backup
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `BACKUP_LOCATION` | No | `/mnt/backup` | Backup storage location |
+| `BACKUP_RETENTION` | No | `7` | Number of backups to keep |
 
 ## Setup Process
 
-1. **Deploy** - Run `tfgrid-compose up tfgrid-nextcloud`
+1. **Deploy** - Run `tfgrid-compose up tfgrid-nextcloud -i`
 2. **Access AIO** - Open `https://<server-ip>:8443`
 3. **Configure** - Enter your domain and set admin password
 4. **Start** - Click "Start containers" in AIO interface
