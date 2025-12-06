@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# TFGrid Nextcloud - Restore Script
+# Shows restore instructions for AIO
+
+echo "🔄 Nextcloud AIO Restore"
+echo ""
+echo "Nextcloud AIO uses BorgBackup for backups and restores."
+echo "Restore must be done through the AIO interface."
+echo ""
+echo "📋 To restore from backup:"
+echo ""
+echo "1. Stop all Nextcloud containers (if running):"
+echo "   docker stop \$(docker ps -q --filter 'name=nextcloud-aio')"
+echo ""
+echo "2. Open the AIO interface:"
+echo "   https://<server-ip>:8443"
+echo ""
+echo "3. In the AIO interface:"
+echo "   - Go to Backup section"
+echo "   - Select the backup to restore"
+echo "   - Click 'Restore'"
+echo ""
+echo "4. Wait for restore to complete"
+echo ""
+echo "5. Restart Nextcloud via AIO interface"
+echo ""
+echo "📚 Documentation:"
+echo "   https://github.com/nextcloud/all-in-one#how-to-restore-from-backup"

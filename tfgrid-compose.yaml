@@ -1,0 +1,89 @@
+name: tfgrid-nextcloud
+version: "1.0.0"
+description: Nextcloud All-in-One cloud platform
+
+patterns:
+  recommended: single-vm
+  supported:
+    - single-vm
+
+resources:
+  cpu:
+    min: 2
+    recommended: 4
+  memory:
+    min: 4096
+    recommended: 8192
+  disk:
+    min: 50
+    recommended: 200
+  ports:
+    - 22:ssh
+    - 80:http
+    - 443:https
+    - 8080:aio-interface
+    - 8443:aio-interface-https
+
+hooks:
+  setup: deployment/setup.sh
+  configure: deployment/configure.sh
+  healthcheck: deployment/healthcheck.sh
+
+environment:
+  - name: DOMAIN
+    required: true
+    description: "Public domain for Nextcloud (e.g., cloud.example.com)"
+  - name: NEXTCLOUD_DATADIR
+    required: false
+    description: "Data directory path (default: Docker volume)"
+  - name: NEXTCLOUD_UPLOAD_LIMIT
+    required: false
+    description: "Max upload size (default: 10G)"
+  - name: NEXTCLOUD_MEMORY_LIMIT
+    required: false
+    description: "PHP memory limit (default: 512M)"
+
+commands:
+  backup:
+    script: /opt/nextcloud/scripts/backup.sh
+    description: "Trigger AIO backup (uses built-in BorgBackup)"
+  backup-status:
+    script: /opt/nextcloud/scripts/backup-status.sh
+    description: "Check backup status and list backups"
+  restore:
+    script: /opt/nextcloud/scripts/restore.sh
+    description: "Show restore instructions"
+  logs:
+    script: /opt/nextcloud/scripts/logs.sh
+    description: "View Nextcloud logs"
+    args: "[mastercontainer|nextcloud|database|redis|apache] [--follow]"
+  update:
+    script: /opt/nextcloud/scripts/update.sh
+    description: "Check for and apply updates"
+  occ:
+    script: /opt/nextcloud/scripts/occ.sh
+    description: "Run Nextcloud occ commands"
+    args: "<occ-command>"
+  restart:
+    script: /opt/nextcloud/scripts/restart.sh
+    description: "Restart Nextcloud services"
+
+status:
+  check_interval: 60
+  endpoints:
+    - path: /status.php
+      expected_status: 200
+
+logging:
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+tags:
+  - nextcloud
+  - cloud
+  - storage
+  - collaboration
+  - docker
+  - file-sync
