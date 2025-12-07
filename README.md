@@ -58,7 +58,14 @@ tfgrid-compose up tfgrid-nextcloud \
 Complete deployment with DNS automation and all options:
 
 ```bash
-# With Cloudflare DNS and optional features
+# With Name.com DNS (recommended - fully automated)
+tfgrid-compose up tfgrid-nextcloud \
+  --env DOMAIN=cloud.example.com \
+  --env DNS_PROVIDER=name.com \
+  --env NAMECOM_USERNAME=myuser \
+  --env NAMECOM_API_TOKEN=your-token
+
+# With Cloudflare DNS and optional features (recommended - fully automated)
 tfgrid-compose up tfgrid-nextcloud \
   --env DOMAIN=cloud.example.com \
   --env DNS_PROVIDER=cloudflare \
@@ -71,13 +78,6 @@ tfgrid-compose up tfgrid-nextcloud \
   --cpu 4 \
   --memory 8192 \
   --disk 500
-
-# With Name.com DNS
-tfgrid-compose up tfgrid-nextcloud \
-  --env DOMAIN=cloud.example.com \
-  --env DNS_PROVIDER=name.com \
-  --env NAMECOM_USERNAME=myuser \
-  --env NAMECOM_API_TOKEN=your-token
 ```
 
 ## Configuration
@@ -86,15 +86,17 @@ tfgrid-compose up tfgrid-nextcloud \
 
 #### Domain & DNS
 
+> **Recommended:** Use `name.com` or `cloudflare` for fully automated DNS setup. Namecheap requires manual IP whitelisting in their dashboard before API calls work.
+
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `DOMAIN` | **Yes** | - | Public domain for Nextcloud |
-| `DNS_PROVIDER` | No | `manual` | DNS provider: `manual`, `name.com`, `namecheap`, `cloudflare` |
+| `DNS_PROVIDER` | No | `manual` | DNS provider: `manual`, `name.com`, `cloudflare`, `namecheap` |
 | `NAMECOM_USERNAME` | If name.com | - | Name.com username |
 | `NAMECOM_API_TOKEN` | If name.com | - | Name.com API token |
+| `CLOUDFLARE_API_TOKEN` | If cloudflare | - | Cloudflare API token |
 | `NAMECHEAP_API_USER` | If namecheap | - | Namecheap API username (requires IP whitelisting) |
 | `NAMECHEAP_API_KEY` | If namecheap | - | Namecheap API key (requires IP whitelisting) |
-| `CLOUDFLARE_API_TOKEN` | If cloudflare | - | Cloudflare API token |
 
 #### Nextcloud Settings
 
