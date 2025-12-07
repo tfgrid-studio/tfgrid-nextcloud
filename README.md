@@ -216,6 +216,13 @@ tfgrid-compose logs nextcloud          # Nextcloud logs
 - Increase memory: set `NEXTCLOUD_MEMORY_LIMIT=1024M`
 - Check disk I/O and available space
 
+## Support
+
+- **📚 Documentation:** [docs.tfgrid.studio](https://docs.tfgrid.studio)
+- **🐛 Issues:** [GitHub Issues](https://github.com/tfgrid-studio/tfgrid-nextcloud/issues)
+- **💬 Discussions:** [GitHub Discussions](https://github.com/orgs/tfgrid-studio/discussions)
+- **📧 Contact:** [tfgrid.studio/contact](https://tfgrid.studio/contact)
+
 ## License
 
 Apache 2.0
