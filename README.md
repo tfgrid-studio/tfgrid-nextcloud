@@ -1,5 +1,9 @@
 # TFGrid Nextcloud
 
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/tfgrid-studio/tfgrid-nextcloud)](https://github.com/tfgrid-studio/tfgrid-nextcloud/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/tfgrid-studio/tfgrid-nextcloud)](https://github.com/tfgrid-studio/tfgrid-nextcloud/issues)
+
 Nextcloud All-in-One cloud platform on ThreeFold Grid.
 
 ## Overview
